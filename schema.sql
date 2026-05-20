@@ -1,8 +1,3 @@
--- ══════════════════════════════════════════════════════════════════
--- TaskFlow — Supabase Schema
--- Виконайте цей скрипт у Supabase SQL Editor (https://app.supabase.com)
--- ══════════════════════════════════════════════════════════════════
-
 -- Таблиця проектів
 CREATE TABLE IF NOT EXISTS projects (
   id         SERIAL PRIMARY KEY,

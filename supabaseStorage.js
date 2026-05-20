@@ -1,24 +1,11 @@
-/**
- * Supabase Storage Layer
- *
- * Цей модуль відповідає за синхронізацію даних із Supabase.
- * Якщо ключі не налаштовані — функції повертають null і додаток
- * автоматично працює тільки з localStorage (offline-режим).
- *
- * Щоб підключити Supabase:
- *  1. Створіть проєкт на https://supabase.com
- *  2. Скопіюйте Project URL та anon key
- *  3. Замініть значення SUPABASE_URL та SUPABASE_ANON_KEY нижче
- *  4. Виконайте SQL-скрипт із src/storage/schema.sql для створення таблиць
- */
 
-// ── Конфігурація ──────────────────────────────────────────────────────────────
+// Конфігурація 
 const SUPABASE_URL      = import.meta.env.VITE_SUPABASE_URL      || "";
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
 const isConfigured = () => SUPABASE_URL && SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes("...");
 
-// ── Базовий fetch до Supabase REST API ────────────────────────────────────────
+// Базовий fetch до Supabase REST API
 async function sbFetch(path, options = {}) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...options,
@@ -37,7 +24,7 @@ async function sbFetch(path, options = {}) {
   return res.json();
 }
 
-// ── Projects ──────────────────────────────────────────────────────────────────
+// Projects
 export async function fetchProjects() {
   if (!isConfigured()) return null;
   return sbFetch("projects?select=*&order=id");
@@ -57,7 +44,7 @@ export async function deleteProject(id) {
   return sbFetch(`projects?id=eq.${id}`, { method: "DELETE" });
 }
 
-// ── Tasks ─────────────────────────────────────────────────────────────────────
+// Tasks 
 export async function fetchTasks(projectId) {
   if (!isConfigured()) return null;
   return sbFetch(`tasks?project_id=eq.${projectId}&select=*,subtasks(*)&order=id`);
@@ -78,7 +65,7 @@ export async function deleteTask(id) {
   return sbFetch(`tasks?id=eq.${id}`, { method: "DELETE" });
 }
 
-// ── Subtasks ──────────────────────────────────────────────────────────────────
+// Subtasks 
 export async function upsertSubtask(subtask) {
   if (!isConfigured()) return null;
   return sbFetch("subtasks", {
@@ -88,7 +75,7 @@ export async function upsertSubtask(subtask) {
   });
 }
 
-// ── Members ───────────────────────────────────────────────────────────────────
+// Members
 export async function fetchMembers(projectId) {
   if (!isConfigured()) return null;
   return sbFetch(`project_members?project_id=eq.${projectId}&select=*`);
@@ -110,7 +97,7 @@ export async function deleteMember(projectId, userId) {
   });
 }
 
-// ── Messages ──────────────────────────────────────────────────────────────────
+// Messages 
 export async function fetchMessages(taskId) {
   if (!isConfigured()) return null;
   return sbFetch(`messages?task_id=eq.${taskId}&select=*&order=created_at`);

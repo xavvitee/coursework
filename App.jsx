@@ -18,7 +18,7 @@ const GlobalStyle = () => (
   `}</style>
 );
 
-// ── Константи ────────────────────────────────────────────────────────────────
+// Константи
 const STATUSES   = ["Зробити","В роботі","Перевіряється","Зроблено"];
 const PRIORITIES = ["Низький","Нормальний","Високий","Критичний"];
 const TAGS       = ["Маркетинг","Дизайн","Розробка","Тестування","Загальне"];
@@ -31,7 +31,7 @@ const fmtDate = d => d ? new Date(d).toLocaleDateString("uk-UA",{day:"2-digit",m
 const nowTime = () => new Date().toLocaleTimeString("uk-UA",{hour:"2-digit",minute:"2-digit"});
 const COLORS = ["#4f8ef7","#a855f7","#22c55e","#f59e0b","#f97316","#ef4444","#06b6d4"];
 
-// ── Початкові дані ───────────────────────────────────────────────────────────
+// Початкові дані
 const DEFAULT_DATA = {
   me: { id:1, name:"Валерія", email:"valeria@team.ua", avatar:"ВА", color:"#4f8ef7" },
   projects: [
@@ -78,7 +78,7 @@ const DEFAULT_DATA = {
   nextId: 500,
 };
 
-// ── localStorage ─────────────────────────────────────────────────────────────
+//  localStorage 
 // ВИПРАВЛЕННЯ #5: зберігати і завантажувати всі дані з localStorage
 function load() {
   try {
@@ -91,7 +91,7 @@ function save(data) {
   try { localStorage.setItem("tf_v3", JSON.stringify(data)); } catch {}
 }
 
-// ── Маленькі компоненти ──────────────────────────────────────────────────────
+//Маленькі компоненти
 const Av = ({ m, size=28 }) => (
   <div style={{ width:size, height:size, borderRadius:"50%", background:m?.color||"#4f8ef7",
     display:"flex", alignItems:"center", justifyContent:"center",
@@ -113,7 +113,7 @@ const Bdg = ({ label, color }) => (
   </span>
 );
 
-// ── Sidebar ──────────────────────────────────────────────────────────────────
+// Sidebar
 function Sidebar({ data, activeProject, setActiveProject, onAddProject }) {
   return (
     <aside style={{ width:210, minWidth:210, background:"var(--surface)",
@@ -164,7 +164,7 @@ function Sidebar({ data, activeProject, setActiveProject, onAddProject }) {
   );
 }
 
-// ── TopBar ───────────────────────────────────────────────────────────────────
+// TopBar 
 function TopBar({ project, members, onInvite, onMembers }) {
   return (
     <div style={{ height:52, display:"flex", alignItems:"center", padding:"0 18px",
@@ -197,7 +197,7 @@ function TopBar({ project, members, onInvite, onMembers }) {
   );
 }
 
-// ── StatsBar ─────────────────────────────────────────────────────────────────
+// StatsBar
 function StatsBar({ tasks }) {
   const total   = tasks.length;
   const done    = tasks.filter(t=>t.status==="Зроблено").length;
@@ -224,7 +224,7 @@ function StatsBar({ tasks }) {
   );
 }
 
-// ── Рядок задачі ─────────────────────────────────────────────────────────────
+// Рядок задачі
 function TaskRow({ task, members, depth=0, onEdit, onDelete, onToggleSub, onMessage }) {
   const [open, setOpen] = useState(true);
   const m    = members.find(x=>x.id===task.assigneeId);
@@ -295,7 +295,7 @@ function TaskRow({ task, members, depth=0, onEdit, onDelete, onToggleSub, onMess
   );
 }
 
-// ── ListView ─────────────────────────────────────────────────────────────────
+// ListView 
 function ListView({ tasks, members, filter, onAdd, onEdit, onDelete, onToggleSub, onMessage }) {
   const filtered = tasks.filter(t=>{
     if (filter.status && t.status!==filter.status) return false;
@@ -333,7 +333,7 @@ function ListView({ tasks, members, filter, onAdd, onEdit, onDelete, onToggleSub
   );
 }
 
-// ── KanbanView ───────────────────────────────────────────────────────────────
+// KanbanView 
 function KanbanView({ tasks, members, onEdit, onAdd }) {
   return (
     <div style={{ display:"flex",gap:10,padding:14,overflowX:"auto",flex:1,alignItems:"flex-start" }}>
@@ -378,7 +378,7 @@ function KanbanView({ tasks, members, onEdit, onAdd }) {
   );
 }
 
-// ── Модалка задачі ────────────────────────────────────────────────────────────
+// Модалка задачі
 function TaskModal({ task, members, onClose, onSave }) {
   const [form, setForm] = useState(task||{
     title:"", status:"Зробити", priority:1,
@@ -471,7 +471,7 @@ function TaskModal({ task, members, onClose, onSave }) {
   );
 }
 
-// ── Модалка запрошення (ВИПРАВЛЕННЯ #6) ──────────────────────────────────────
+// Модалка запрошення (ВИПРАВЛЕННЯ #6) 
 function InviteModal({ members, onClose, onInvite }) {
   const [email, setEmail] = useState("");
   const [role,  setRole]  = useState("Розробник");
@@ -537,7 +537,7 @@ function InviteModal({ members, onClose, onInvite }) {
   );
 }
 
-// ── Модалка команди (ВИПРАВЛЕННЯ #2) ─────────────────────────────────────────
+// Модалка команди (ВИПРАВЛЕННЯ #2)
 function MembersModal({ members, tasks, isOwner, meId, onClose, onRemove }) {
   return (
     <div className="fade" style={{ position:"fixed",inset:0,background:"rgba(0,0,0,.6)",zIndex:100,
@@ -596,7 +596,7 @@ function MembersModal({ members, tasks, isOwner, meId, onClose, onRemove }) {
   );
 }
 
-// ── Модалка повідомлень (ВИПРАВЛЕННЯ #4) ─────────────────────────────────────
+// Модалка повідомлень (ВИПРАВЛЕННЯ #4) 
 function MessagesModal({ task, member, messages, onClose, onSend }) {
   const [text, setText] = useState("");
   const msgs = messages[task.id] || [];
@@ -658,7 +658,7 @@ function MessagesModal({ task, member, messages, onClose, onSend }) {
   );
 }
 
-// ── Головний App ──────────────────────────────────────────────────────────────
+// Головний App 
 export default function App() {
   const [data, setData] = useState(()=>load());
   const [pid,  setPid]  = useState(data.projects[0]?.id||1);
